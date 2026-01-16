@@ -7,7 +7,10 @@ import model.entities.Department;
 import model.entities.Seller;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDaoJDBC implements SellerDao {
 
@@ -30,6 +33,51 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public void deleteById(Integer id) {
 
+    }
+
+    @Override
+    public List<Seller> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(
+                    "SELECT seller.*, department.Name as DepartmentName "
+                            + "FROM seller JOIN department ON seller.DepartmentId = department.Id "
+                            + "WHERE DepartmentId = ? "
+                            + "ORDER BY Name",
+                    Statement.RETURN_GENERATED_KEYS
+            );
+            preparedStatement.setInt(1, department.getId());
+            resultSet = preparedStatement.executeQuery();
+
+            List<Seller> list = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            while(resultSet.next()) {
+                Department dep = map.get(resultSet.getInt("DepartmentId"));
+                if(dep == null) {
+                    dep = instantiateDepartment(resultSet);
+                    map.put(resultSet.getInt("DepartmentId"), dep);
+                }
+
+                Seller seller = instantiateSeller(resultSet, dep);
+                list.add(seller);
+
+            }
+            return list;
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally{
+            DB.closeStatement(preparedStatement);
+            DB.closeResultSet(resultSet);
+        }
     }
 
     @Override
@@ -82,10 +130,5 @@ public class SellerDaoJDBC implements SellerDao {
         department.setName(resultSet.getString("DepartmentName"));
 
         return department;
-    }
-
-    @Override
-    public List<Seller> findByName(String name) {
-        return List.of();
     }
 }
