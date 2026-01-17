@@ -41,6 +41,13 @@ public class Main {
             System.out.println(s);
         }
 
+        /*
+        System.out.println("\n=== TEST 4: Insert Seller ===");
+        Seller seller1 = new Seller(null, "Fábio", "fabiorhormensj@gmail.com", new Date(), 4000.0, department);
+        sellerDao.insert(seller1);
+        System.out.println("Inserted Seller! Id: " + seller1.getId());
+         */
+
         sc.close();
     }
 }
