@@ -47,7 +47,7 @@ public class Main {
         Seller seller1 = new Seller(null, "Fábio", "fabiorhormensj@gmail.com", new Date(), 4000.0, department);
         sellerDao.insert(seller1);
         System.out.println("Inserted Seller! Id: " + seller1.getId());
-        */
+
 
 
         System.out.println("\n=== TEST 5: Update Seller name by ID ===");
@@ -59,6 +59,12 @@ public class Main {
 
         seller.setName(name);
         sellerDao.update(seller);
+
+         */
+        System.out.println("\n=== TEST 6: Delete Seller by ID ===");
+        System.out.print("Enter the ID of the Seller: ");
+        id = sc.nextInt();
+        sellerDao.deleteById(id);
 
         sc.close();
     }
