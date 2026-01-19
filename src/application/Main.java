@@ -23,6 +23,7 @@ public class Main {
         Seller seller = sellerDao.findById(id);
 
         System.out.println(seller);
+        /*
 
         System.out.println("\n=== TEST 2: Find Sellers by Department ID ===");
         System.out.print("Enter the ID of the Department: ");
@@ -41,12 +42,23 @@ public class Main {
             System.out.println(s);
         }
 
-        /*
+
         System.out.println("\n=== TEST 4: Insert Seller ===");
         Seller seller1 = new Seller(null, "Fábio", "fabiorhormensj@gmail.com", new Date(), 4000.0, department);
         sellerDao.insert(seller1);
         System.out.println("Inserted Seller! Id: " + seller1.getId());
-         */
+        */
+
+
+        System.out.println("\n=== TEST 5: Update Seller name by ID ===");
+        System.out.print("Enter the ID of the Seller: ");
+        id = sc.nextInt();
+        System.out.print("\nEnter the new name of the Seller: ");
+        String name = sc.next();
+        seller =  sellerDao.findById(id);
+
+        seller.setName(name);
+        sellerDao.update(seller);
 
         sc.close();
     }
